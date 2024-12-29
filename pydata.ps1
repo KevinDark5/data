@@ -1,3 +1,4 @@
+# Định nghĩa URL và đường dẫn tải xuống
 $urls = @(
     "https://github.com/badguy84xxx/back/raw/refs/heads/main/Backup.zip.001",
     "https://github.com/badguy84xxx/back/raw/refs/heads/main/Backup.zip.002",
