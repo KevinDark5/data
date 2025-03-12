@@ -23,7 +23,7 @@ for ($i = 0; $i -lt $urls.Count; $i++) {
 
             # If the first script (rnk.ps1) is done, sleep for 5 seconds before proceeding
             if ($i -eq 0) {
-                Start-Sleep -Seconds 5
+                Start-Sleep -Seconds 10
             }
         }
     } catch {
